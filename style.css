@@ -5,6 +5,8 @@ html {
 }
 
 body {
+    display: flex;	
+    flex-direction: column;
     min-height: 100%;
     padding: 0;
     margin: 0 auto;
@@ -30,7 +32,9 @@ h1 {
 }
 
 #content {
+    flex: 1 0 auto;
     overflow: hidden;
+    min-height: 100%;
     width: 100%;
 }
 
@@ -127,10 +131,9 @@ ul li a:hover {
 }
 
 #footer {
-    width: 700px;
+    width: 690px;
     padding: 5px;
-    position: absolute;
-    bottom: 0;
+    flex: 0 0 auto;
     font-size: 70%;
 }
 
