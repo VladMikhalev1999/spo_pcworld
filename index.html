@@ -1,8 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<meta charset="utf-8">
         	<title>Компьютерный мир</title>
         	<link rel="stylesheet" href="style.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" crossorigin="anonymous"></script>
+<script>
+function showRegForm(error = null) {
+    $.ajax({
+        type: "GET",
+        url: "registration.php",
+        success: function(data) {
+            $("#main").html(data)
+            if (error) alert(error);
+        }
+    });
+}
+
+function signIn() {
+let inputs = $('#sgnfrm').find('input');
+if (inputs[0].value == "" || inputs[1].value == "") return;
+$.ajax({ 
+            type: "POST",
+            url: "auth.php",
+            data: { mail: inputs[0].value, passwd: inputs[1].value } ,
+            success: function(data) {
+                if (data.indexOf('[Error]') == -1) {
+                    $("#sgnfrm").html(data);
+                } else {
+                    if (data.indexOf('Wrong password!') == -1) showRegForm(data);
+                    else alert(data);
+                }
+            }
+        });
+}
+</script>
         	<meta name="Разработчик сайта" content="Михалев Владислав">  
 	</head>
 	<body>
@@ -20,6 +52,17 @@
                     <li><a href="notes.html">Ноутбуки</a></li>
                     <li><a href="nets.html">Нетбуки</a></li>
                 </ul>
+                
+                <div id="lgnfrm">
+                <h3>Авторизация</h3>
+                <form id="sgnfrm" method="post">
+                    <p><input type="email" placeholder="Ваш email" required/></p>
+                    <p><input type="password" placeholder="Ваш пароль" required/></p>
+                    <p id="pinborder"><a id="inborder" href="#" onclick="signIn()">Войти</a></p>
+                    <p id="reg"><a href="#" id="regbtn" onclick="showRegForm()">Регистрация</a></p>
+                </form>
+                </div>
+                
             </div>
             
             <div id="main">
@@ -52,8 +95,8 @@
                 
             </div>
             
+            
         </div>
-        
         <div id="footer">
             <p>
                 Сайт изготовлен администратором сайта 2011.
