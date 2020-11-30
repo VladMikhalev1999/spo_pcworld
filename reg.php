@@ -29,6 +29,7 @@ function br($str) {
         if (!$res) {
             echo "[Error] " . mysqli_error($db);
         } else {
+            mail($mail, "Регистрация завершена", "!!!\nemail:" . $mail . "\nusername:" . $name . "\nlogin:" . $login . "\npassword:" . $passwd);
             echo "<h2>Регистрация прошла успешно!</h2><h2>Имя пользователя - " . $name . "</h2><h2>Почтовый ящик - " . $mail . "</h2><a id='inborder' href='index.html'>Вернуться на сайт</a>";
         }
     } else {
