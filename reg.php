@@ -22,15 +22,23 @@ function br($str) {
     $name = $_REQUEST['firstName'];
     $passwd = $_REQUEST['passwd'];
     $repasswd = $_REQUEST['rePasswd'];
-    if ($passwd == $repasswd) {
-        $salt = _salt();
-        $cryptPasswd = crypt($passwd, $salt);
-        $res = mysqli_query($db, 'CALL add_user(' . br($mail) . ',' . br($name) . ',' . br($login) . ',' . br($cryptPasswd) . ')');
-        if (!$res) {
-            echo "[Error] " . mysqli_error($db);
-        } else {
-            mail($mail, "Регистрация завершена", "!!!\nemail:" . $mail . "\nusername:" . $name . "\nlogin:" . $login . "\npassword:" . $passwd);
-            echo "<h2>Регистрация прошла успешно!</h2><h2>Имя пользователя - " . $name . "</h2><h2>Почтовый ящик - " . $mail . "</h2><a id='inborder' href='index.html'>Вернуться на сайт</a>";
+    if ($mail == "" || $mail == "" || $login == "" || $name == "" || $passwd == "" || $repasswd == "") {
+        echo "[Error] Empty fields found!";
+    }
+    else if ($passwd == $repasswd) {
+        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            echo "[Error] Incorrect email!";
+        }
+        else {
+            $salt = _salt();
+            $cryptPasswd = crypt($passwd, $salt);
+            $res = mysqli_query($db, 'CALL add_user(' . br($mail) . ',' . br($name) . ',' . br($login) . ',' . br($cryptPasswd) . ')');
+            if (!$res) {
+                echo "[Error] " . mysqli_error($db);
+            } else {
+                mail($mail, "Регистрация завершена", "!!!\nemail:" . $mail . "\nusername:" . $name . "\nlogin:" . $login . "\npassword:" . $passwd);
+                echo "<h2>Регистрация прошла успешно!</h2><h2>Имя пользователя - " . $name . "</h2><h2>Почтовый ящик - " . $mail . "</h2><a id='inborder' href='index.html'>Вернуться на сайт</a>";
+            }
         }
     } else {
         echo "[Error] Passwords don't match!";

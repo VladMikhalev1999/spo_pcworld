@@ -6,6 +6,8 @@
         	<link rel="stylesheet" href="style.css">
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha512-WNLxfP/8cVYL9sj8Jnp6et0BkubLP31jhTG9vhL/F5uEZmg5wEzKoXp1kJslzPQWwPT1eyMiSxlKCgzHLOTOTQ==" crossorigin="anonymous"></script>
 <script>
+var possibles = []
+
 function showRegForm(error = null) {
     $.ajax({
         type: "GET",
@@ -19,7 +21,7 @@ function showRegForm(error = null) {
 
 function signIn() {
 let inputs = $('#sgnfrm').find('input');
-if (inputs[0].value == "" || inputs[1].value == "") return;
+if (inputs[0].value == "" || inputs[1].value == "") { alert("[Error] Empty fields found!"); return; }
 $.ajax({ 
             type: "POST",
             url: "auth.php",
@@ -28,7 +30,7 @@ $.ajax({
                 if (data.indexOf('[Error]') == -1) {
                     $("#sgnfrm").html(data);
                 } else {
-                    if (data.indexOf('Wrong password!') == -1) showRegForm(data);
+                    if (data.indexOf('Wrong password!') == -1 && data.indexOf('Incorrect email!') == -1) showRegForm(data);
                     else alert(data);
                 }
             }
@@ -56,8 +58,8 @@ $.ajax({
                 <div id="lgnfrm">
                 <h3>Авторизация</h3>
                 <form id="sgnfrm" method="post">
-                    <p><input type="email" placeholder="Ваш email" required/></p>
-                    <p><input type="password" placeholder="Ваш пароль" required/></p>
+                    <p><input type="email" placeholder="Ваш email" required /></p>
+                    <p><input type="password" placeholder="Ваш пароль" required /></p>
                     <p id="pinborder"><a id="inborder" href="#" onclick="signIn()">Войти</a></p>
                     <p id="reg"><a href="#" id="regbtn" onclick="showRegForm()">Регистрация</a></p>
                 </form>
